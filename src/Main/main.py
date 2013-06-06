@@ -46,12 +46,13 @@ class main_window(tk.Frame):
         self.quit_button.grid(row = 0 , column = 1)
         self.browse_button = tk.Button(self, text = 'Browse', command = self.traverse)
         self.browse_button.grid(row = 0, column = 2 )
+        
     def get_file_attr(self, filename):
         '''
         Method to find current file attributes of files in target 
         directory and change file permissions
         '''
-        if os.path.isfile(filename):
+        if os.path.isfile(filename):#loop for files
             try:
                 fn=os.path.normpath(filename)
                 print fn
@@ -78,37 +79,14 @@ class main_window(tk.Frame):
             except IOError:
                 print 'Error'
                 sys.exit()
-        else:
+        else:# loop for directories
             try:
                 fn=os.path.normpath(filename)
-                print fn
-                everyone, domain, type = win32security.LookupAccountName ("", "Everyone")
-                admins, domain, type = win32security.LookupAccountName ("", "Administrators")
-                user, domain, type = win32security.LookupAccountName ("", win32api.GetUserName ())
-                #open(fn, "w").close()
-                main_window.show_cacls(self, fn)
                 current_username = win32api.GetUserName()
-                print 'Everyone*********************************************'
                 os.system("icacls " + fn + " /grant :r Everyone:(OI)(CI)F")
-                print 'Current User************************************************'
                 os.system("icacls " + fn + " /grant :r "+current_username+":(OI)(CI)F")
-                print 'Users********************************************************'
                 os.system("icacls " + fn + " /grant :r Users:(OI)(CI)F")
-                #
-                #Find the DACL
-                #
-#                 sec_des = win32security.GetNamedSecurityInfo(fn,win32security.SE_FILE_OBJECT, win32security.DACL_SECURITY_INFORMATION)
-#                 dacl = sec_des.GetSecurityDescriptorDacl()
-#                 dacl.AddAccessAllowedAce(win32security.ACL_REVISION, ntcon.FILE_APPEND_DATA|ntcon.FILE_WRITE_EA|ntcon.FILE_WRITE_ATTRIBUTES| ntcon.SYNCHRONIZE|ntcon.FILE_WRITE_DATA,everyone)
-#                 dacl.AddAccessAllowedAce(win32security.ACL_REVISION, ntcon.FILE_APPEND_DATA|ntcon.FILE_WRITE_EA|ntcon.FILE_WRITE_ATTRIBUTES| ntcon.SYNCHRONIZE|ntcon.FILE_WRITE_DATA, user)
-#                 dacl.AddAccessAllowedAce(win32security.ACL_REVISION, ntcon.FILE_APPEND_DATA|ntcon.FILE_WRITE_EA|ntcon.FILE_WRITE_ATTRIBUTES| ntcon.SYNCHRONIZE|ntcon.FILE_WRITE_DATA,admins)
-                #
-                #Set ACLs
-                #
-#                 sec_des.SetSecurityDescriptorDacl (1, dacl, 0)
-#                 win32security.SetFileSecurity (fn, win32security.DACL_SECURITY_INFORMATION, sec_des)
-                self.show_cacls (fn)
-                                
+                                               
             except IOError:
                 print 'Error'
                 sys.exit()

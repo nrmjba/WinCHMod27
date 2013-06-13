@@ -8,5 +8,6 @@
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
 <path>C:\Python275\Lib\site-packages\win32</path>
 <path>C:\Python275\Lib\site-packages\win32\lib</path>
+<path>C:\Python275\Lib\site-packages\win32\libs</path>
 </pydev_pathproperty>
 </pydev_project>
